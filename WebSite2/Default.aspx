@@ -400,13 +400,7 @@
                                 placeholder="Digite seu nome completo" />
                         </div>
                         <p class="h5">Você deseja...</p>
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="flexRadioDefault"
-                                id="flexRadioDefault2"
-                                checked />
+                        <div class="form-check">                          
                             <label class="form-check-label" for="flexRadioDefault2">
                                 Escrever sua prece
                             </label>
@@ -416,17 +410,7 @@
                                 class="form-control"
                                 id="exampleFormControlTextarea1"
                                 rows="3"></textarea>
-                        </div>
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="radio"
-                                name="flexRadioDefault"
-                                id="flexRadioDefault1" />
-                            <label class="form-check-label" for="flexRadioDefault1">
-                                Deixar que a gente escolha
-                            </label>
-                        </div>
+                        </div>           
                     </div>
                     <div class="modal-footer">
                         <div class="d-grid col-8 mx-auto">
