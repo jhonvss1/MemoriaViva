@@ -10,19 +10,21 @@ using System.Web.UI.WebControls;
 public partial class _Default : System.Web.UI.Page 
 {
     
+    //APRESENTAÇÃO
 
-    protected void btnOrdemAleatoria_Click(object sender, EventArgs e)
+    protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack) { 
+            //CARREGA O FALECIDO DO BANCO DE DADOS
+            List<Falecido> falecidos = GetFalecidos();
 
+            //ATRIBUI A LISTA DE FALECIDOS AO REPEATER NO HTML
+            rptFalecidos.DataSource = falecidos;
+            rptFalecidos.DataBind();
+        
+        }
     }
-    protected void btnOrdemAlfabetica_Click(object sender, EventArgs e)
-    {
 
-    }
-    protected void btnSalvarPrece_Click(object sender, EventArgs e) 
-    { 
-
-    }
     protected void btnAdicionarVitimaModal_Click(object sender, EventArgs e)
     {
         // Lógica para adicionar vítima
@@ -55,10 +57,41 @@ public partial class _Default : System.Web.UI.Page
         localObitotxt.Value = "";
     }
 
+    protected void btnSalvarPrece_Click(object sender, EventArgs e)
+    {
+        //botao que informa o nome do usuario e a prece e envia a um falecido
+        string nomeUsuario = txtNomeUsuario.Value.ToUpper();
+        string Prece = txtPrece.Value;
+
+        Prece prece = new Prece
+        {
+            nome_usuario = nomeUsuario,
+            descricao_prece = Prece
+        };
+
+        AdicionarPrece(prece);
+
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "fecharModal", "$('#adicionarVitima').modal('hide');", true);
+        Response.Write("<script>alert('Prece Enviada! Continue forte.');</script>");
+
+        txtNomeUsuario.Value = "";
+        txtPrece.Value = "";
+    }
+
     protected void btnAcenderVela_Click(object sender, EventArgs e)
     {
 
     }
+    protected void btnOrdemAleatoria_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnOrdemAlfabetica_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    //MODELO
     public class Falecido
     {
         public int id_vitima { get; set; }
@@ -68,13 +101,14 @@ public partial class _Default : System.Web.UI.Page
         public string local_obito { get; set; }
     }
 
+    //REPOSITORIOS 
     private List<Falecido> GetFalecidos()
     {
         string conexaoString = System.Configuration.ConfigurationManager.ConnectionStrings["MinhaConexao"].ConnectionString;
 
         var falecidos = new List<Falecido>();
 
-        string consulta = "SELECT IdVitima, Nome, DataNascimento, DataFalecimento, LocalObito FROM Vitima";
+        string consulta = "SELECT nome_vitima, data_nasc, data_obito, local_obito FROM vitima";
 
         using (SqlConnection conexao = new SqlConnection(conexaoString))
         {
@@ -87,7 +121,7 @@ public partial class _Default : System.Web.UI.Page
                     {
                         falecidos.Add(new Falecido
                         {
-                            id_vitima = Convert.ToInt32(leitor["id_vitima"]),
+                            
                             nome_vitima = leitor["nome_vitima"].ToString(),
                             data_nasc = Convert.ToDateTime(leitor["data_nasc"]),
                             data_obito = Convert.ToDateTime (leitor["data_obito"]),
@@ -116,6 +150,37 @@ public partial class _Default : System.Web.UI.Page
                 comando.Parameters.AddWithValue("@DataNascimento", falecido.data_nasc.ToString("yyyy/MM/dd"));
                 comando.Parameters.AddWithValue("@DataFalecimento", falecido.data_obito.ToString("yyyy/MM/dd"));
                 comando.Parameters.AddWithValue("LocalObito", falecido.local_obito);
+
+                conexao.Open();
+                comando.ExecuteNonQuery();
+            }
+        }
+
+        //Atualizar a lista de falecidos no repeater
+        List<Falecido> falecidos = GetFalecidos();
+        rptFalecidos.DataSource = falecidos;
+        rptFalecidos.DataBind();
+    }
+
+    //MODELO
+    public class Prece
+    {
+        public int id_prece { get; set; }
+        public string nome_usuario { get; set; }
+        public string descricao_prece { get; set; }
+    }
+
+    private void AdicionarPrece(Prece prece)
+    {
+        string conexaoString = System.Configuration.ConfigurationManager.ConnectionStrings["MinhaConexao"].ConnectionString;
+        string inserirPrece = "INSERT INTO prece(nome_usuario, descricao_prece) VALUES (@NomeUsuario, @Prece)";
+
+        using (SqlConnection conexao = new SqlConnection(conexaoString))
+        {
+            using (SqlCommand comando = new SqlCommand(inserirPrece, conexao))
+            {
+                comando.Parameters.AddWithValue("@NomeUsuario", prece.nome_usuario);
+                comando.Parameters.AddWithValue("@Prece", prece.descricao_prece);
 
                 conexao.Open();
                 comando.ExecuteNonQuery();
