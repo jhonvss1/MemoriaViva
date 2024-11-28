@@ -25,7 +25,11 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M21 4v2h-1l-5 7.5V22H9v-8.5L4 6H3V4zM6.404 6L11 12.894V20h2v-7.106L17.596 6z" />
                     </svg>
+<<<<<<< Updated upstream
                     <asp:Button ID="btnOrdemAleatoria" runat="server" CssClass="btn-filtro-ativo" OnClick="btnOrdemAleatoria_Click" Text="Ordem Sequencial" />
+=======
+                    <asp:Button ID="btnOrdemAleatoria" runat="server" CssClass="btn-filtro-ativo" OnClick="btnOrdemAleatoria_Click" Text="Ordem Aleatória" />
+>>>>>>> Stashed changes
                     <asp:Button ID="btnOrdemAlfabetica" runat="server" CssClass="btn-filtro-inativo" OnClick="btnOrdemAlfabetica_Click" Text="Ordem Alfabética" />
                 </div>
             </div>
@@ -33,6 +37,7 @@
             <!-- Lista de Cards -->
             <div class="lista-cards">
                 <!-- Repeater fica responsável por gerar vários cards dinâmicamente -->
+<<<<<<< Updated upstream
                <asp:Repeater ID="rptFalecidos" runat="server">
     <ItemTemplate>
         <div class="card card-item">
@@ -58,6 +63,30 @@
                     <span class="h1 text-center vela-icone">🕯️</span>
                     <span id="lblVelaNumero" runat="server" class="h6 px-2 py-1 vela-numero">0</span>
                 </div>
+=======
+                <asp:Repeater ID="rptFalecidos" runat="server">
+                    <ItemTemplate>
+                        <div class="card card-item" data-bs-toggle="modal" data-bs-target="#perfil">
+                            <div class="card-body row g-0">
+                                <div class="col-10 p-3">
+                                    <h5 class="card-title mb-2">
+                                        <strong><%# Eval("nome_vitima") %></strong>
+                                    </h5>
+                                    <p class="card-text mb-2">✟ <%# Eval("data_obito", "{0:dd/MM/yyyy}") %></p>
+                                    <div class="d-flex gap-2">
+                                        <asp:Button ID="btnAcenderVela1" runat="server" class="btn btn-acender-vela" Text="Acender vela 🔥" OnClick="btnAcenderVela_Click" />
+                                        <button type="button" class="btn btn-escrever-prece" data-bs-toggle="modal" data-bs-target="#modalPrece">Escrever prece ✍️</button>
+                                    </div>
+                                </div>
+                                <div class="col-2 d-flex flex-column align-items-center justify-content-center">
+                                    <span class="h1 text-center vela-icone">🕯️</span>
+                                    <span class="h6 px-2 py-1 vela-numero"><strong>110</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </ItemTemplate>
+                </asp:Repeater>
+>>>>>>> Stashed changes
             </div>
         </div>
     </ItemTemplate>
@@ -112,7 +141,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                            <strong>Thyago Alves Tenório Da Silva</strong>
+                            <strong>Nome da Vítima</strong>
                         </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
