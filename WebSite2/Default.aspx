@@ -32,26 +32,29 @@
 
             <!-- Lista de Cards -->
             <div class="lista-cards">
-                <!-- Card Individual -->
-                <div class="card card-item" data-bs-toggle="modal" data-bs-target="#perfil">
-                    <div class="card-body row g-0">
-                        <div class="col-10 p-3">
-                            <h5 class="card-title mb-2">
-                                <strong>Matheus Oliveira Oliveira Oliveira</strong>
-                            </h5>
-                            <p class="card-text mb-2">✟ 25/01/2027</p>
-                            <div class="d-flex gap-2">
-                                <asp:Button ID="btnAcenderVela1" runat="server" class="btn btn-acender-vela" Text="Acender vela 🔥" OnClick="btnAcenderVela_Click" />
-                                <button type="button" class="btn btn-escrever-prece" data-bs-toggle="modal" data-bs-target="#modalPrece">Escrever prece ✍️</button>
+                <!-- Repeater fica responsável por gerar vários cards dinâmicamente -->
+                <asp:Repeater ID="rptFalecidos" runat="server">
+                    <ItemTemplate>
+                        <div class="card card-item" data-bs-toggle="modal" data-bs-target="#perfil">
+                            <div class="card-body row g-0">
+                                <div class="col-10 p-3">
+                                    <h5 class="card-title mb-2">
+                                        <strong><%# Eval("nome_vitima") %></strong>
+                                    </h5>
+                                    <p class="card-text mb-2">✟ <%# Eval("data_obito", "{0:dd/MM/yyyy}") %></p>
+                                    <div class="d-flex gap-2">
+                                        <asp:Button ID="btnAcenderVela1" runat="server" class="btn btn-acender-vela" Text="Acender vela 🔥" OnClick="btnAcenderVela_Click" />
+                                        <button type="button" class="btn btn-escrever-prece" data-bs-toggle="modal" data-bs-target="#modalPrece">Escrever prece ✍️</button>
+                                    </div>
+                                </div>
+                                <div class="col-2 d-flex flex-column align-items-center justify-content-center">
+                                    <span class="h1 text-center vela-icone">🕯️</span>
+                                    <span class="h6 px-2 py-1 vela-numero"><strong>110</strong></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-2 d-flex flex-column align-items-center justify-content-center">
-                            <span class="h1 text-center vela-icone">🕯️</span>
-                            <span class="h6 px-2 py-1 vela-numero"><strong>110</strong></span>
-                        </div>
-                    </div>
-                </div>
-              
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
 
             <!-- Botão Adicionar Vítima -->
@@ -119,20 +122,22 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Prece para Thyago</h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                            Registrando... <asp:Literal ID="litNomeFalecido" runat="server"></asp:Literal>
+                        </h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nomeFalecido" class="form-label">Seu nome</label>
-                            <input type="text" class="form-control" id="txtNomeFalecido" placeholder="Digite seu nome completo" />
+                            <input type="text" class="form-control" id="txtNomeUsuario" runat="server" placeholder="Digite seu nome " />
                         </div>
-                        <p class="h5">Você deseja...</p>
+                        <p class="h5">Se sinta livre à:</p>
                         <div class="form-check">
                             <label class="form-check-label" for="flexRadioDefault2">Escrever sua prece</label>
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="txtPrece" runat="server" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
